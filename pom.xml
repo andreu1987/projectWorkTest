@@ -17,7 +17,7 @@
         <selenium.java.version>4.16.1</selenium.java.version>
         <log4j-core.version>2.16.0</log4j-core.version>
         <webdrivermanager.version>5.6.3</webdrivermanager.version>
-        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+        <junit.version>5.10.1</junit.version>
         <javafaker.version>0.15</javafaker.version>
 
         <jsoup.version>1.17.2</jsoup.version>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>

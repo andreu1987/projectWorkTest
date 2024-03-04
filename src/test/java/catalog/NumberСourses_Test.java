@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TestNumberСourses {
+public class NumberСourses_Test {
     private WebDriver driver;
     private CatalogPageOtus catalogPageOtus = null;
-    //Faker faker = new Faker();
+
 
     @BeforeEach
     public void beforeEach() {
@@ -40,20 +40,26 @@ public class TestNumberСourses {
 
 
     @Test
-    public void checkDataOnLessonPage() throws IOException {
-        for (int i = 1; i<catalogPageOtus.getTilesNumbers(); i++){
+    public void TestCheckDataOnLessonPage() throws IOException {
+        for (int i = 1; i < catalogPageOtus.getTilesNumbers(); i++){
             String expectedHeader = catalogPageOtus.getLessonNameByIndex(i);
             String expectedLessonDuration = catalogPageOtus.getLessonDuration(i);
 
             catalogPageOtus.checkHeaderLessonByIndex(i,expectedHeader);
             catalogPageOtus.checkDescriptionLessonByIndex(i);
             catalogPageOtus.checkLessonDuration(i,expectedLessonDuration); // метод проверки длительности
-            catalogPageOtus.checkLessonFormat(i,"онлайн");// метод проверки формата обучения
+            catalogPageOtus.checkLessonFormat(i,"Онлайн");// метод проверки формата обучения
 
         }
 
+
         catalogPageOtus.clickRandomLessonsCards();
         LessonPage lessonPage = new LessonPage(driver,"");
+        lessonPage.getLessonName();
+        lessonPage.checkDescriptionLesson();
+        lessonPage.checkLessonDuration();
+        lessonPage.checkLessonFormat("Онлайн");
+
     }
 
 

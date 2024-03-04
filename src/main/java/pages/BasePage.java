@@ -3,6 +3,7 @@ package pages;
 import common.AbsCommon;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -25,8 +26,13 @@ public abstract class BasePage extends AbsCommon {
         driver.get(url);
     }
 
-    // метод ждем когда появится элемент
-    public void waitVisibility(By elementBy){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(elementBy));
+    public WebElement $(By by){
+        return driver.findElement(by);
     }
+
+    public WebElement $(String locator){
+        By by = locator.startsWith("/") ? By.xpath(locator): By.cssSelector(locator);
+        return this.$(by);
+    }
+
 }

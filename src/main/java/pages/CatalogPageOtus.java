@@ -2,19 +2,21 @@ package pages;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import javax.lang.model.util.Elements;
-import javax.swing.text.Element;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 
+
+import static org.apache.commons.compress.harmony.unpack200.bytecode.forms.ByteCodeForm.get;
 import static org.apache.commons.lang3.RegExUtils.replaceAll;
 import static org.bouncycastle.asn1.crmf.SinglePubInfo.web;
 
@@ -55,7 +57,7 @@ public class CatalogPageOtus extends BasePage {
       return lessonsNumber.get(--index).findElement(By.xpath(".//h6")).getText();
     }
 
-    // метод проверка длительности (Даты у карточки)
+    // метод проверка длительности обучения у карточки
     public String getLessonDuration(int index){
         return lessonDuration.get(--index).getText();
     }
@@ -68,38 +70,39 @@ public class CatalogPageOtus extends BasePage {
     //  метод проверки карточки
     public void checkHeaderLessonByIndex(int index, String expectedHeader) throws IOException {
             Document dom = getDomPage(index);
-            //WebElement headerPageElement = (WebElement) dom.selectFirst("h1");
-            //Assertions.assertEquals(expectedHeader, headerPageElement.getText(),"Error");
-        Element headerPageElement = dom.selectFirst("h1");
-        Assertions.assertEquals(expectedHeader, headerPageElement.Text(),"Error");
+            Element headerPageElement = dom.selectFirst("h1");
+            Assertions.assertEquals(expectedHeader, headerPageElement.text(),"Error");
 
         }
 
     //метод проверки
-    public void checkDescriptionLessonByIndex(int index) throws IOException{
-        WebElement webElement = (WebElement) getDomPage(index).selectXpath("//h1/following-sibling::div[text()]");
-        if (webElement.isDisplayed()){
-            webElement = (WebElement) getDomPage(index).selectXpath("//h1/following-sibling::div/p[text()]");
+    public void checkDescriptionLessonByIndex(int index) throws IOException {
+        Elements elements = getDomPage(index).selectXpath("//h1/following-sibling::div[text()]");
+        if (elements.isEmpty()){
+            elements = getDomPage(index).selectXpath("//h1/following-sibling::div/p[text()]");
         }
 
-        String headerPageElement = webElement.getText();
-
+            Element headerPageElement = elements.get(0);
+        Assertions.assertFalse(headerPageElement.text().isEmpty(),"Error");
     }
 
-    //метод проверки длительности
+
+
+    //метод проверки длительности обучения
     public void checkLessonDuration(int index,String expectedDuration) throws IOException{
-        WebElement headerPageElement = (WebElement)
-                getDomPage(index).selectXpath("//div/following-sibling::p[contains(text(),'месяц')]").get(0);
-        Assertions.assertEquals(expectedDuration.replaceAll("^.*?\\s*",""),headerPageElement.getText());
+        Element headerPageElement = getDomPage(index).
+                selectXpath("//div/following-sibling::p[contains(text(), 'месяц')] ").get(0);
+        Assertions.assertEquals(expectedDuration.replaceAll("^.*?·\\s+",""),headerPageElement.text());
     }
+
 
     // метод проверки формат обучения
     public void checkLessonFormat(int index,String format) throws IOException{
-        WebElement formatLessonElement = (WebElement)
-                getDomPage(index).selectXpath(String.format("//p[contains(text(),'%s')]",format)).get(0);
-        Assertions.assertFalse(formatLessonElement.getText().isEmpty(),"Error");
+        Element formatLessonElement = getDomPage(index).
+                selectXpath(String.format("//p[contains(text(), '%s')]",format)).get(0);
+        Assertions.assertFalse(formatLessonElement.text().isEmpty(),"Error");
     }
 
 
-    }
+}
 
